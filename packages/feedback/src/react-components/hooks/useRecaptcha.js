@@ -15,7 +15,7 @@ export default function useRecaptcha() {
   const getReCaptchaToken = useCallback(() => {
     const { grecaptcha } = window
     grecaptcha.enterprise.ready(async () => {
-      const token = await grecaptcha.enterprise.execute('6LeHLAEgAAAAADb0pcN6CVZdgD7KFDtCFElRu-f7', action)
+      const token = await grecaptcha.enterprise.execute('6LfjDw4gAAAAAEoKF6fhiBvFEoPPFvO7KUb_-50J', action)
       console.log(token)
       const score = await fakeSendTokenToVerify(token, action)
       console.log(score)
@@ -29,7 +29,7 @@ export default function useRecaptcha() {
   useEffect(() => {
     const script = document.createElement('script')
     script.type = 'text/javascript'
-    script.src = 'https://www.google.com/recaptcha/enterprise.js?render=6LeHLAEgAAAAADb0pcN6CVZdgD7KFDtCFElRu-f7'
+    script.src = 'https://www.google.com/recaptcha/enterprise.js?render=6LfjDw4gAAAAAEoKF6fhiBvFEoPPFvO7KUb_-50J'
     script.id = 'recaptcha-key'
     script.onload = async () => {
       console.log('recaptcha-key script loaded')
