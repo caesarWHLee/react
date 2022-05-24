@@ -62,8 +62,18 @@ export default function useComments() {
 
   const postComment = async (textareaValue) => {
     console.log(`send comment '${textareaValue}' to BE`);
+    const date = new Date
+
+    // add comment before sending request
+    const newComment = {
+      id: uuidv4(), //since no return the real id, randomly generate one
+      name: userId,
+      content: textareaValue,
+      date: convertDateFromISO8601(date)
+    }
+    setShowingComments(showingComments => [newComment, ...showingComments])
+    // send request without error handle
     try {
-      const date = new Date
       const result = await postFeedback({
         name: userId,
         form: "3",
@@ -72,19 +82,9 @@ export default function useComments() {
         userFeedback: textareaValue
       })
       console.log('result', result)
-      if (result.status === 200) {
-        const newComment = {
-          id: uuidv4(), //since no return the real id, randomly generate one
-          name: userId,
-          content: textareaValue,
-          date: convertDateFromISO8601(date)
-        }
-        setShowingComments(showingComments => [newComment, ...showingComments])
-      }
     } catch (error) {
       console.log(error)
     }
-    return true
   }
 
   useEffect(() => {
