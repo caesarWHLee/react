@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 
-const action = { action: 'submit' }
+import { verifyRecaptcha } from '../api'
+
+const action = 'submit'
 const tolerantScore = 0.3
 
 export default function useRecaptcha() {
@@ -9,7 +11,11 @@ export default function useRecaptcha() {
   const fakeSendTokenToVerify = useCallback(async (token, action) => {
     const scores = [0, 0.3, 0.7, 1.0]
     const score = scores[Math.floor(Math.random() * scores.length)]
-    return score
+    console.log(score)
+    if (score >= tolerantScore) {
+      setVerified(true)
+    }
+    return score >= tolerantScore ? true : false
   }, [])
 
   const getReCaptchaToken = useCallback(() => {
@@ -17,12 +23,14 @@ export default function useRecaptcha() {
     grecaptcha.enterprise.ready(async () => {
       const token = await grecaptcha.enterprise.execute('6LfjDw4gAAAAAEoKF6fhiBvFEoPPFvO7KUb_-50J', action)
       console.log(token)
-      const score = await fakeSendTokenToVerify(token, action)
-      console.log(score)
-      if (score >= tolerantScore) {
+      // const verified = await verifyRecaptcha({
+      //   token,
+      //   recaptchaAction: action
+      // })
+      const verified = await fakeSendTokenToVerify(token, action)
+      if (verified) {
         setVerified(true)
       }
-      return score
     })
   })
 
