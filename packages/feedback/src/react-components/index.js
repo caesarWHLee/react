@@ -6,14 +6,16 @@ import ThumbsForm from './thumbs-form/ThumbsForm'
 import CommentForm from './comment-form/CommentForm'
 import useRecaptcha from './hooks/useRecaptcha'
 import Comments from './comments/Comments'
-import { getFeedbacks, getThumbUps } from './api'
+import useComments from './hooks/useComments';
+import { getThumbUps } from './api'
+
 
 export default function Feedback() {
   const [thumbsValue, setThumbsValue] = useState(null)
-  const [comments, setComments] = useState([])
   const [userId, setUserId] = useState(null)
-  const nextFeedbackQueryIndex = useRef(0)
+
   const { verified } = useRecaptcha()
+  const { comments, noMoreComment, loadMoreComments } = useComments()
 
   useEffect(() => {
     if (sessionStorage['corvid-19-query-user-id']) {
@@ -44,27 +46,6 @@ export default function Feedback() {
     fetchThumbUpData()
   }, [])
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const result = await getFeedbacks({
-          take: 13,
-        })
-        console.log('result', result)
-        if (result?.data) {
-          const { data: { formResults }, skip } = result.data
-          console.log(formResults, skip)
-          const comments = formResults.map(({ id, name, result, responseTime }) => ({ id: Math.random(), name, content: result, date: responseTime }))
-          setComments(comments)
-        }
-      } catch (error) {
-        window.error = error
-        console.log('error', error)
-      }
-    }
-
-    fetchComments()
-  }, [])
 
 
   const commentFormSubmitHandler = (textareaValue) => {
@@ -84,7 +65,7 @@ export default function Feedback() {
         {verified && <CommentForm onSubmit={commentFormSubmitHandler} />}
       </Section>
       <Section>
-        <Comments comments={comments} />
+        <Comments comments={comments} onExpand={loadMoreComments} noMoreComment={noMoreComment} />
       </Section>
     </>
   )
