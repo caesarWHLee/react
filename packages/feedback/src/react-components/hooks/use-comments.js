@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { getFeedbacks, postFeedback } from '../api'
-import useUser from './useUser'
+import useUser from './use-user'
 
 const initialCommentCount = 3
 const moreCommentCount = 10

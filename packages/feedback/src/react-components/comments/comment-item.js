@@ -99,26 +99,18 @@ export default function CommentItem({ comment }) {
   const [contentTooLong, setContentTooLong] = useState(false)
   const contentRef = useRef()
 
-  const convertDateFromISO8601 = (dateString) => {
-    const date = new Date(dateString)
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
-      }`
-  }
-
   useEffect(() => {
     const isMobile = window.innerWidth < 768
     const limit = isMobile ? 96 : 216
     if (contentRef.current) {
       const height = contentRef.current.clientHeight
       if (height > limit) {
-        console.log('tooo long')
         setContentTooLong(true)
       }
     }
   }, [])
 
   const feedbackClickedHandler = (e) => {
-    console.log('end of pressing')
     setIsPressing(false)
     e.target.blur()
 
@@ -127,12 +119,7 @@ export default function CommentItem({ comment }) {
     }
   }
 
-  // PC
-  // { isPressing ? <CommentStrongSvg /> : (isHovering ? <CommentSvg /> : null) }
-  // Mobile
-  // isPressing ? <CommentStrongSvg /> : <CommentSvg />
-
-  return <Wrapper contentExpand={contentExpand} onMouseOver={() => { console.log('onMouseOver'); setIsHovering(true) }} onMouseOut={() => { console.log('onMouseOut'); setIsHovering(false) }} onMouseDown={() => { console.log('onMouseDown'); setIsPressing(true) }} onMouseUp={feedbackClickedHandler}>
+  return <Wrapper contentExpand={contentExpand} onMouseOver={() => { setIsHovering(true) }} onMouseOut={() => { setIsHovering(false) }} onMouseDown={() => { setIsPressing(true) }} onMouseUp={feedbackClickedHandler}>
     <Header>
       <Time>{comment.date}</Time>
       <SVGWrapper>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import Section from './layout/Section'
-import ThumbsForm from './thumbs-form/ThumbsForm'
-import CommentForm from './comment-form/CommentForm'
-import useRecaptcha from './hooks/useRecaptcha'
-import Comments from './comments/Comments'
-import useComments from './hooks/useComments';
-import useThumbsUp from './hooks/useThumbsUp'
+import ThumbsForm from './thumbs-form/thumbs-form'
+import CommentForm from './comment-form/comment-form'
+import useRecaptcha from './hooks/use-recaptcha'
+import Comments from './comments/comments'
+import useComments from './hooks/use-comments';
+import useThumbsUp from './hooks/use-thumbsUp'
 
 
 export default function Feedback() {

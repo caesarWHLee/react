@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 
-import CommentItem from "./CommentItem";
+import CommentItem from "./comment-item";
 
 const Wrapper = styled.div`
   margin-top: 40px;

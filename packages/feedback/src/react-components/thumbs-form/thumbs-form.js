@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components';
 
-import ThumbField from './ThumbField';
+import ThumbField from './thumb-field';
 
 const Form = styled.form`
   display: flex;

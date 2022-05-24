@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import useUser from './useUser';
+import useUser from './use-user';
 import { getLikes, giveLikes } from '../api'
 
 export default function useThumbsUp() {

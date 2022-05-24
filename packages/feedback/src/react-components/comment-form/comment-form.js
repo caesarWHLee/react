@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import Textarea from './Texarea'
+import Textarea from './texarea'
 
 const Form = styled.form`
   display: flex;
