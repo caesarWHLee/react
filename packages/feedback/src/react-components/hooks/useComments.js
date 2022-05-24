@@ -30,12 +30,12 @@ export default function useComments() {
         if (formResults.length) {
           const comments = formResults.map(({ id, name, result, responseTime }) => ({ id, name, content: result, date: responseTime }))
           hidingCommentsRef.current = [...hidingCommentsRef.current, ...comments]
-          const commentsToShow = hidingCommentsRef.current.splice(0, showCommentCount)
-          console.log(commentsToShow)
-          setShowingComments(showingComments => [...showingComments, ...commentsToShow])
         } else {
           setNoMoreComment(true)
         }
+        const commentsToShow = hidingCommentsRef.current.splice(0, showCommentCount)
+        console.log(commentsToShow)
+        setShowingComments(showingComments => [...showingComments, ...commentsToShow])
       }
     } catch (error) {
       console.log('error', error)
@@ -43,7 +43,7 @@ export default function useComments() {
   })
 
   const loadMoreComments = async () => {
-    if (hidingCommentsRef.current.length < moreCommentCount) {
+    if (hidingCommentsRef.current.length < moreCommentCount && !noMoreComment) {
       console.log(`need to fetch more feedbacks take:${takeRef.current} skip:${skipRef.current}`)
       fetchComments(moreCommentCount)
     } else {
