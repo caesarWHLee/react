@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
 import Section from './layout/Section'
 import ThumbsForm from './thumbs-form/ThumbsForm'
@@ -10,8 +11,19 @@ import { getFeedbacks, getThumbUps } from './api'
 export default function Feedback() {
   const [thumbsValue, setThumbsValue] = useState(null)
   const [comments, setComments] = useState([])
+  const [userId, setUserId] = useState(null)
   const nextFeedbackQueryIndex = useRef(0)
   const { verified } = useRecaptcha()
+
+  useEffect(() => {
+    if (sessionStorage['corvid-19-query-user-id']) {
+      setUserId(sessionStorage['corvid-19-query-user-id'])
+    } else {
+      const userId = uuidv4()
+      setUserId(userId)
+      sessionStorage['corvid-19-query-user-id'] = userId
+    }
+  })
 
   useEffect(() => {
     const fetchThumbUpData = async () => {
