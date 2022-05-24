@@ -8,5 +8,5 @@ const feedbackRequest = axios.create({
 
 export const getFeedbacks = (params) => feedbackRequest.get('/api/feedback', { params })
 export const postFeedback = (data) => feedbackRequest.post('/api/feedback', data)
-export const getThumbUps = () => feedbackRequest.get('/api/like')
-export const giveThumbUp = (data) => feedbackRequest.put('/api/like', data)
+export const getLikes = () => feedbackRequest.get('/api/like')
+export const giveLikes = (data) => feedbackRequest.put('/api/like', data)
