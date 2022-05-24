@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { v4 as uuidv4 } from 'uuid';
 
 import Section from './layout/Section'
 import ThumbsForm from './thumbs-form/ThumbsForm'
@@ -12,20 +11,10 @@ import { getThumbUps } from './api'
 
 export default function Feedback() {
   const [thumbsValue, setThumbsValue] = useState(null)
-  const [userId, setUserId] = useState(null)
 
   const { verified } = useRecaptcha()
-  const { comments, noMoreComment, loadMoreComments } = useComments()
-
-  useEffect(() => {
-    if (sessionStorage['corvid-19-query-user-id']) {
-      setUserId(sessionStorage['corvid-19-query-user-id'])
-    } else {
-      const userId = uuidv4()
-      setUserId(userId)
-      sessionStorage['corvid-19-query-user-id'] = userId
-    }
-  })
+  const { comments, noMoreComment, loadMoreComments, postComment } = useComments()
+  console.log(`show comments count: ${comments.length}`)
 
   useEffect(() => {
     const fetchThumbUpData = async () => {
@@ -48,11 +37,6 @@ export default function Feedback() {
 
 
 
-  const commentFormSubmitHandler = (textareaValue) => {
-    console.log(`send comment '${textareaValue}' to BE`);
-    return true
-  }
-
   const thumbsFormSubmitHandler = (thumbValue) => {
     console.log(`send thumbValue '${thumbValue}' to BE`);
     return true
@@ -62,7 +46,7 @@ export default function Feedback() {
     <>
       <Section>
         <ThumbsForm onSubmit={thumbsFormSubmitHandler} thumbs={thumbsValue} />
-        {verified && <CommentForm onSubmit={commentFormSubmitHandler} />}
+        {verified && <CommentForm onSubmit={postComment} />}
       </Section>
       <Section>
         <Comments comments={comments} onExpand={loadMoreComments} noMoreComment={noMoreComment} />

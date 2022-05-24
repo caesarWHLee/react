@@ -134,7 +134,7 @@ export default function CommentItem({ comment }) {
 
   return <Wrapper contentExpand={contentExpand} onMouseOver={() => { console.log('onMouseOver'); setIsHovering(true) }} onMouseOut={() => { console.log('onMouseOut'); setIsHovering(false) }} onMouseDown={() => { console.log('onMouseDown'); setIsPressing(true) }} onMouseUp={feedbackClickedHandler}>
     <Header>
-      <Time>{convertDateFromISO8601(comment.date)}</Time>
+      <Time>{comment.date}</Time>
       <SVGWrapper>
         < CommentStrongSvg className="strong" />
         <CommentSvg className="normal" />

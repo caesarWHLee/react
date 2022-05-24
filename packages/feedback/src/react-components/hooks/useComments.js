@@ -1,16 +1,24 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
-import { getFeedbacks } from '../api'
+import { getFeedbacks, postFeedback } from '../api'
 
 const initialCommentCount = 3
 const moreCommentCount = 10
 
 export default function useComments() {
+  const [userId, setUserId] = useState(null)
   const [showingComments, setShowingComments] = useState([])
   const [noMoreComment, setNoMoreComment] = useState(false)
   const hidingCommentsRef = useRef([])
   const skipRef = useRef(0)
   const takeRef = useRef(initialCommentCount + 2 * moreCommentCount)
+
+  const convertDateFromISO8601 = (dateString) => {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+      }`
+  }
 
   const fetchComments = useCallback(async (showCommentCount, firstTime = false) => {
     try {
@@ -28,7 +36,7 @@ export default function useComments() {
           takeRef.current = 2 * moreCommentCount
         }
         if (formResults.length) {
-          const comments = formResults.map(({ id, name, result, responseTime }) => ({ id, name, content: result, date: responseTime }))
+          const comments = formResults.map(({ id, name, result, responseTime }) => ({ id, name, content: result, date: convertDateFromISO8601(responseTime) }))
           hidingCommentsRef.current = [...hidingCommentsRef.current, ...comments]
         } else {
           setNoMoreComment(true)
@@ -52,6 +60,43 @@ export default function useComments() {
     }
   }
 
+  const postComment = async (textareaValue) => {
+    console.log(`send comment '${textareaValue}' to BE`);
+    try {
+      const date = new Date
+      const result = await postFeedback({
+        name: userId,
+        form: "3",
+        responseTime: date,
+        field: "7",
+        userFeedback: textareaValue
+      })
+      console.log('result', result)
+      if (result.status === 200) {
+        const newComment = {
+          id: uuidv4(), //since no return the real id, randomly generate one
+          name: userId,
+          content: textareaValue,
+          date: convertDateFromISO8601(date)
+        }
+        setShowingComments(showingComments => [newComment, ...showingComments])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    return true
+  }
+
+  useEffect(() => {
+    if (sessionStorage['corvid-19-query-user-id']) {
+      setUserId(sessionStorage['corvid-19-query-user-id'])
+    } else {
+      const userId = uuidv4()
+      setUserId(userId)
+      sessionStorage['corvid-19-query-user-id'] = userId
+    }
+  })
+
   useEffect(() => {
     fetchComments(initialCommentCount, true)
   }, [])
@@ -59,6 +104,7 @@ export default function useComments() {
   return {
     comments: showingComments,
     noMoreComment,
-    loadMoreComments
+    loadMoreComments,
+    postComment,
   }
 }
