@@ -59,7 +59,7 @@ const Header = styled.div`
   justify-content: space-between;
 `
 
-const Date = styled.span`
+const Time = styled.span`
   font-size: 14px;
   line-height: 21px;
   color: rgba(0, 9, 40, 30%)
@@ -99,6 +99,12 @@ export default function CommentItem({ comment }) {
   const [contentTooLong, setContentTooLong] = useState(false)
   const contentRef = useRef()
 
+  const convertDateFromISO8601 = (dateString) => {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${(date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+      }`
+  }
+
   useEffect(() => {
     const isMobile = window.innerWidth < 768
     const limit = isMobile ? 96 : 216
@@ -128,7 +134,7 @@ export default function CommentItem({ comment }) {
 
   return <Wrapper contentExpand={contentExpand} onMouseOver={() => { console.log('onMouseOver'); setIsHovering(true) }} onMouseOut={() => { console.log('onMouseOut'); setIsHovering(false) }} onMouseDown={() => { console.log('onMouseDown'); setIsPressing(true) }} onMouseUp={feedbackClickedHandler}>
     <Header>
-      <Date>{comment.date}</Date>
+      <Time>{convertDateFromISO8601(comment.date)}</Time>
       <SVGWrapper>
         < CommentStrongSvg className="strong" />
         <CommentSvg className="normal" />
