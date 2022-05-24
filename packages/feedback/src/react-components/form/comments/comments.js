@@ -5,6 +5,7 @@ import CommentItem from "./comment-item";
 
 const Wrapper = styled.div`
   margin: 80px 0 60px 0;
+  width: 100%;
 
   @media (max-width: 767px) {
     margin: 40px 0 32px 0;
@@ -43,11 +44,16 @@ const Button = styled.button`
 `
 
 export default function Comments({ comments, onExpand, noMoreComment }) {
+  const clickHandler = (e) => {
+    e.preventDefault()
+    onExpand()
+  }
+
   return <Wrapper>
     <Title>網友回饋</Title>
     {comments.map((comment) => (<CommentItem key={comment.id} comment={comment} />))}
     {!noMoreComment && <ButtonWrapper>
-      <Button onClick={onExpand}>展開更多</Button>
+      <Button onClick={clickHandler}>展開更多</Button>
     </ButtonWrapper>
     }
   </Wrapper>

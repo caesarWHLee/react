@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ThumbUpSvg from '../../static/icon-thumb-up.svg'
-import ThumbUpActiveSvg from '../../static/icon-thumb-up-active.svg'
-import ThumbDownSvg from '../../static/icon-thumb-down.svg'
-import ThumbDownActiveSvg from '../../static/icon-thumb-down-active.svg'
+import ThumbUpSvg from '../../../static/icon-thumb-up.svg'
+import ThumbUpActiveSvg from '../../../static/icon-thumb-up-active.svg'
+import ThumbDownSvg from '../../../static/icon-thumb-down.svg'
+import ThumbDownActiveSvg from '../../../static/icon-thumb-down-active.svg'
 
 
 const Wrapper = styled.div`

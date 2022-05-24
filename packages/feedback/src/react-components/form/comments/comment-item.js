@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
-import CommentSvg from '../../static/icon-comment.svg'
-import CommentStrongSvg from '../../static/icon-comment-strong.svg'
+import CommentSvg from '../../../static/icon-comment.svg'
+import CommentStrongSvg from '../../../static/icon-comment-strong.svg'
 
 
 const SVGWrapper = styled.div`
