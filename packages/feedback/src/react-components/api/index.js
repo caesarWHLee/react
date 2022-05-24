@@ -10,3 +10,4 @@ export const getFeedbacks = (params) => feedbackRequest.get('/api/feedback', { p
 export const postFeedback = (data) => feedbackRequest.post('/api/feedback', data)
 export const getLikes = () => feedbackRequest.get('/api/like')
 export const giveLikes = (data) => feedbackRequest.put('/api/like', data)
+export const verifyRecaptcha = (data) => feedbackRequest.post('/api/verification', data)
