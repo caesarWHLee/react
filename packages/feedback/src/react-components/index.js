@@ -8,8 +8,10 @@ import Comments from './comments/comments'
 import useComments from './hooks/use-comments';
 import useThumbsUp from './hooks/use-thumbsUp'
 
+import { formsData } from './mock-forms'
 
-export default function Feedback() {
+
+export default function Feedback({ data = formsData }) {
   const { verified } = useRecaptcha()
   const { comments, noMoreComment, loadMoreComments, postComment } = useComments()
   const { thumbsUp, giveThumbUp } = useThumbsUp()
@@ -19,9 +21,9 @@ export default function Feedback() {
     <>
       <Section>
         <ThumbsForm onSubmit={giveThumbUp} thumbs={thumbsUp} />
-        {verified && <CommentForm onSubmit={postComment} />}
       </Section>
       <Section>
+        {verified && <CommentForm onSubmit={postComment} />}
         <Comments comments={comments} onExpand={loadMoreComments} noMoreComment={noMoreComment} />
       </Section>
     </>

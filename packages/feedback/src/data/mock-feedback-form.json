@@ -1,0 +1,26 @@
+{
+  "form": {
+    "id": "1",
+    "name": "feedback",
+    "slug": "feedback",
+    "type": "form",
+    "active": true,
+    "fieldsCount": 2,
+    "fields": [
+      {
+        "id": "1",
+        "name": "這個結果符合實際情況嗎？",
+        "type": "single",
+        "status": "draft",
+        "sortOrder": null
+      },
+      {
+        "id": "2",
+        "name": "跟大家分享你的經驗...",
+        "type": "text",
+        "status": "draft",
+        "sortOrder": null
+      }
+    ]
+  }
+}

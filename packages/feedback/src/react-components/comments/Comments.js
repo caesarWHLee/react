@@ -4,7 +4,11 @@ import styled from "styled-components";
 import CommentItem from "./comment-item";
 
 const Wrapper = styled.div`
-  margin-top: 40px;
+  margin: 80px 0 60px 0;
+
+  @media (max-width: 767px) {
+    margin: 40px 0 32px 0;
+  }
 `
 
 const Title = styled.p`

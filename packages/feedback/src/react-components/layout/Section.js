@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 const Wrapper = styled.div`
   margin: 0 auto;
-  padding: 20px 0;
   width: 600px;
   font-family: 'Noto Sans TC', sans-serif;
 
