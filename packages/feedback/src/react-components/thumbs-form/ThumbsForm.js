@@ -21,7 +21,7 @@ const ThumbWrapper = styled.div`
 `
 
 
-export default function ThumbsForm({ onSubmit }) {
+export default function ThumbsForm({ onSubmit, thumbs }) {
   const [thumbUpChecked, setThumbUpChecked] = useState(false)
   const [thumbDownChecked, setThumbDownChecked] = useState(false)
   const [thumbUpPressing, setThumbUpPressing] = useState(false)
@@ -84,7 +84,7 @@ export default function ThumbsForm({ onSubmit }) {
     checked: thumbUpChecked,
     pressing: thumbUpPressing,
     label: '符合',
-    statistic: 128,
+    statistic: thumbs ? thumbs.thumbUp : null,
   }
 
   const thumbDownProps = {
@@ -94,7 +94,7 @@ export default function ThumbsForm({ onSubmit }) {
     checked: thumbDownChecked,
     pressing: thumbDownPressing,
     label: '不符合',
-    statistic: 9,
+    statistic: thumbs ? thumbs.thumbDown : null,
   }
 
 

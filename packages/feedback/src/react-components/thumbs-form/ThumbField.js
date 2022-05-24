@@ -72,7 +72,7 @@ export default function ThumbField({ thumbsUp, onMouseDown, onMouseUp, checked, 
           {pressing || checked ? ThumbActiveSVG : ThumbSVG}
         </ThumbIconWrapper>
       </ThumbMockLabel>
-      <ThumbStatistic>{statistic}</ThumbStatistic>
+      {statistic !== null && <ThumbStatistic>{statistic}</ThumbStatistic>}
     </Wrapper>
   )
 }
