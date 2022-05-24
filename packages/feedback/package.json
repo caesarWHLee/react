@@ -24,17 +24,18 @@
   "author": "caesarlee",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.27.2",
     "react": "18.1.0",
     "react-dom": "^18.1.0",
     "styled-components": "5.3.5"
   },
   "devDependencies": {
-    "@svgr/webpack": "^6.2.1",
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.1",
     "@babel/eslint-parser": "^7.11.4",
     "@babel/preset-env": "^7.17.12",
     "@babel/preset-react": "^7.17.12",
+    "@svgr/webpack": "^6.2.1",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.2.5",
     "eslint": "^7.7.0",
