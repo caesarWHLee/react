@@ -1,30 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import CommentSvg from '../../static/icon-comment.svg'
 import CommentStrongSvg from '../../static/icon-comment-strong.svg'
 
-const MobileSVGWrapper = styled.div`
+
+const SVGWrapper = styled.div`
   width: 20px;
   height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  @media (min-width: 1200px) {
+  .normal {
     display: none;
   }
-`
-
-const PCSVGWrapper = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 1199px) {
+  .strong {
     display: none;
+  }
+  @media (max-width: 1200px) {
+    .normal {
+      display: block;
+    }
   }
 `
 
@@ -38,7 +35,23 @@ const Wrapper = styled.button`
   width: 100%;
   text-align: left;
   cursor: pointer;
-  // cursor: ${({ contentExpand }) => contentExpand ? 'auto' : 'pointer'};
+
+  &:hover {
+    @media (min-width: 1201px) {
+      .normal {
+        display: block;
+      }  
+    }
+  }
+
+  &:active {
+    .normal {
+      display: none;
+    }
+    .strong {
+      display: block;
+    }
+  }
 `
 
 const Header = styled.div`
@@ -58,7 +71,19 @@ const Content = styled.div`
   font-size: 18px;
   line-height: 36px;
   overflow: hidden;
-  height: ${({ contentExpand }) => contentExpand ? 'unset' : '216px'};
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 32px;
+  }
+  ${({ contentTooLong, contentExpand }) =>
+    (contentTooLong && !contentExpand) ? `
+      max-height: 216px;
+      @media (max-width: 768px) {
+        max-height: 96px;
+      }
+    ` : ''
+  }
+
 `
 
 const Hint = styled.div`
@@ -71,33 +96,45 @@ export default function CommentItem({ comment }) {
   const [contentExpand, setContentExpand] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isPressing, setIsPressing] = useState(false)
+  const [contentTooLong, setContentTooLong] = useState(false)
+  const contentRef = useRef()
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768
+    const limit = isMobile ? 96 : 216
+    if (contentRef.current) {
+      const height = contentRef.current.clientHeight
+      if (height > limit) {
+        console.log('tooo long')
+        setContentTooLong(true)
+      }
+    }
+  }, [])
 
   const feedbackClickedHandler = (e) => {
     console.log('end of pressing')
     setIsPressing(false)
     e.target.blur()
-    setContentExpand((contentExpand) => !contentExpand)
+
+    if (contentTooLong) {
+      setContentExpand((contentExpand) => !contentExpand)
+    }
   }
 
-  let PCSVG
-  if (isHovering) {
-    PCSVG = <CommentSvg />
-  }
-  if (isPressing) {
-    PCSVG = <CommentStrongSvg />
-  }
+  // PC
+  // { isPressing ? <CommentStrongSvg /> : (isHovering ? <CommentSvg /> : null) }
+  // Mobile
+  // isPressing ? <CommentStrongSvg /> : <CommentSvg />
 
-  return <Wrapper contentExpand={contentExpand} onMouseOver={() => (setIsHovering(true))} onMouseOut={() => (setIsHovering(false))} onMouseDown={() => { setIsPressing(true) }} onMouseUp={feedbackClickedHandler}>
+  return <Wrapper contentExpand={contentExpand} onMouseOver={() => { console.log('onMouseOver'); setIsHovering(true) }} onMouseOut={() => { console.log('onMouseOut'); setIsHovering(false) }} onMouseDown={() => { console.log('onMouseDown'); setIsPressing(true) }} onMouseUp={feedbackClickedHandler}>
     <Header>
       <Date>{comment.date}</Date>
-      <MobileSVGWrapper>
-        {isHovering || isPressing ? < CommentStrongSvg /> : <CommentSvg />}
-      </MobileSVGWrapper>
-      <PCSVGWrapper>
-        {isPressing ? <CommentStrongSvg /> : (isHovering ? <CommentSvg /> : null)}
-      </PCSVGWrapper>
+      <SVGWrapper>
+        < CommentStrongSvg className="strong" />
+        <CommentSvg className="normal" />
+      </SVGWrapper>
     </Header>
-    <Content contentExpand={contentExpand} >{comment.content}</Content>
-    {!contentExpand && <Hint>展開全部</Hint>}
+    <Content contentTooLong={contentTooLong} contentExpand={contentExpand} ref={contentRef} >{comment.content}</Content>
+    {contentTooLong && !contentExpand && <Hint>展開全部</Hint>}
   </Wrapper >
 }
