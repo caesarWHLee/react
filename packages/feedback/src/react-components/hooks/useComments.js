@@ -2,17 +2,18 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 
 import { getFeedbacks, postFeedback } from '../api'
+import useUser from './useUser'
 
 const initialCommentCount = 3
 const moreCommentCount = 10
 
 export default function useComments() {
-  const [userId, setUserId] = useState(null)
   const [showingComments, setShowingComments] = useState([])
   const [noMoreComment, setNoMoreComment] = useState(false)
   const hidingCommentsRef = useRef([])
   const skipRef = useRef(0)
   const takeRef = useRef(initialCommentCount + 2 * moreCommentCount)
+  const { userId } = useUser()
 
   const convertDateFromISO8601 = (dateString) => {
     const date = new Date(dateString)
@@ -86,16 +87,6 @@ export default function useComments() {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    if (sessionStorage['corvid-19-query-user-id']) {
-      setUserId(sessionStorage['corvid-19-query-user-id'])
-    } else {
-      const userId = uuidv4()
-      setUserId(userId)
-      sessionStorage['corvid-19-query-user-id'] = userId
-    }
-  })
 
   useEffect(() => {
     fetchComments(initialCommentCount, true)
