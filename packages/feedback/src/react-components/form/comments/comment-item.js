@@ -110,7 +110,6 @@ export default function CommentItem({ comment }) {
   }, [])
 
   const feedbackClickedHandler = (e) => {
-    setIsPressing(false)
     e.target.blur()
 
     if (contentTooLong) {
@@ -120,17 +119,9 @@ export default function CommentItem({ comment }) {
 
   return (
     <Wrapper
+      type="button"
       contentExpand={contentExpand}
-      onMouseOver={() => {
-        setIsHovering(true)
-      }}
-      onMouseOut={() => {
-        setIsHovering(false)
-      }}
-      onMouseDown={() => {
-        setIsPressing(true)
-      }}
-      onMouseUp={feedbackClickedHandler}
+      onClick={feedbackClickedHandler}
     >
       <Header>
         <Time>{comment.date}</Time>
